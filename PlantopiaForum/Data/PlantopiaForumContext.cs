@@ -15,5 +15,6 @@ namespace PlantopiaForum.Data
         }
 
         public DbSet<PlantopiaForum.Models.Discussion> Discussion { get; set; } = default!;
+        public DbSet<PlantopiaForum.Models.Comment> Comment { get; set; } = default!;
     }
 }
