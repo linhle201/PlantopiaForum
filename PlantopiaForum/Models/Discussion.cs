@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlantopiaForum.Models
 {
@@ -9,6 +10,11 @@ namespace PlantopiaForum.Models
         public string Content { get; set; } = string.Empty;          // Content 
 
         public string ImageFilename { get; set; } = string.Empty;
+
+        // Property for file upload, not mapped in EF
+        [NotMapped]
+        [Display(Name = "Photograph")]
+        public IFormFile? ImageFile { get; set; } // nullable! 
 
         [Display(Name = "Date Created")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;

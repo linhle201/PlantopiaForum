@@ -22,7 +22,10 @@ namespace PlantopiaForum.Controllers
         // GET: Discussions
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Discussion.ToListAsync());
+            var discussions = await _context.Discussion
+            .OrderByDescending(m => m.CreatedAt)
+            .ToListAsync();
+            return View(discussions);
         }
 
         // GET: Discussions/Details/5
@@ -33,8 +36,8 @@ namespace PlantopiaForum.Controllers
                 return NotFound();
             }
 
-            var discussion = await _context.Discussion
-                .FirstOrDefaultAsync(m => m.DiscussionId == id);
+            var discussion = await _context.Discussion.FirstOrDefaultAsync(m => m.DiscussionId == id);
+            
             if (discussion == null)
             {
                 return NotFound();
@@ -54,14 +57,33 @@ namespace PlantopiaForum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DiscussionId,Title,Content,ImageFilename,CreatedAt")] Discussion discussion)
+        public async Task<IActionResult> Create([Bind("DiscussionId,Title,Content,ImageFile,CreatedAt")] Discussion discussion)
         {
+
+            // Check if an image file is uploaded
+            if (discussion.ImageFile != null)
+            {
+                // Rename the uploaded file to a GUID (unique filename) and set it before saving in the database
+                discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile.FileName);
+
+                // Save the uploaded file to the wwwroot/images folder
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", discussion.ImageFilename);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await discussion.ImageFile.CopyToAsync(fileStream);
+                }
+            }
+
+            // Only save to the database if the model is valid
             if (ModelState.IsValid)
             {
+                // Add the discussion to the database
                 _context.Add(discussion);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(discussion);
         }
 
@@ -73,7 +95,9 @@ namespace PlantopiaForum.Controllers
                 return NotFound();
             }
 
-            var discussion = await _context.Discussion.FindAsync(id);
+            // Include the Comments list 
+            var discussion = await _context.Discussion.Include(m => m.Comments).FirstOrDefaultAsync(m => m.DiscussionId == id);
+
             if (discussion == null)
             {
                 return NotFound();
@@ -86,7 +110,7 @@ namespace PlantopiaForum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFilename,CreatedAt")] Discussion discussion)
+        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFile,ImageFilename,CreatedAt")] Discussion discussion)
         {
             if (id != discussion.DiscussionId)
             {
@@ -97,7 +121,42 @@ namespace PlantopiaForum.Controllers
             {
                 try
                 {
-                    _context.Update(discussion);
+                    // Get the existing discussion from the database to prevent tracking issues
+                    var existingDiscussion = await _context.Discussion
+                        .FirstOrDefaultAsync(d => d.DiscussionId == discussion.DiscussionId);
+
+                    if (existingDiscussion == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // If a new image is uploaded, save it to the server
+                    if (discussion.ImageFile != null)
+                    {
+                        // Generate a unique filename for the new image
+                        discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile.FileName);
+
+                        // Save the uploaded image to the server
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", discussion.ImageFilename);
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await discussion.ImageFile.CopyToAsync(fileStream);
+                        }
+                    }
+                    else
+                    {
+                        // If no new image is uploaded, retain the old image filename
+                        discussion.ImageFilename = existingDiscussion.ImageFilename;
+                    }
+
+                    // Update the other fields in the existing discussion
+                    existingDiscussion.Title = discussion.Title;
+                    existingDiscussion.Content = discussion.Content;
+                    existingDiscussion.CreatedAt = discussion.CreatedAt;
+                    existingDiscussion.ImageFilename = discussion.ImageFilename;
+
+                    // Save changes to the database
+                    _context.Update(existingDiscussion);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

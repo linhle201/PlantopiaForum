@@ -1,28 +1,45 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PlantopiaForum.Data;
 using PlantopiaForum.Models;
 
 namespace PlantopiaForum.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly PlantopiaForumContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        // Constructor
+        public HomeController(PlantopiaForumContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        // Home page - ../ or ../Home/Index
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var discussions = await _context.Discussion
+            .OrderByDescending(m => m.CreatedAt)
+            .ToListAsync();
+
+            return View(discussions);
         }
 
+        // Display a discussion by id - ../Home/Dicussion/328
+        public async Task<IActionResult> Discussion(int id)
+        {
+            // get photo from db by id
+            var discussions = await _context.Discussion
+            .OrderByDescending(m => m.CreatedAt)  
+            .ToListAsync();
+
+            return View(discussions);
+        }
+
+        // Privacy page - ../Home/Privacy/
         public IActionResult Privacy()
         {
             return View();
         }
-
-        
     }
 }

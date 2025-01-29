@@ -4,50 +4,46 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="fw-bold my-4" style="color: darkgreen; margin-bottom: 2rem;">Discussion Room</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-light text-white fw-bold" style="font-size: 0.8rem; padding: 0.5rem 1rem; background-color: darkgreen;" asp-action="Create">Create New Discussion</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFilename)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageFilename)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedAt)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.DiscussionId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.DiscussionId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.DiscussionId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card" style="max-height: 500px;">
+                    @if (!string.IsNullOrEmpty(item.ImageFilename))
+                    {
+                        <img src="@Url.Content("~/images/" + item.ImageFilename)" class="card-img-top" alt="@item.Title" style="height: 250px; object-fit: cover;" />
+                    }
+                    <div class="card-body" style="height: auto; padding: 1rem;">
+                        <h5 class="card-title" style="font-size: 1.2rem;">@item.Title</h5>
+                        <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">@item.Content</p>
+                        <p class="card-text"><small class="text-muted">Posted on @item.CreatedAt.ToString("MMMM dd, yyyy")</small></p>
+                    </div>
+                    <div class="card-footer text-center" >
+                        <a class="btn btn-light text-white fw-bold" asp-action="Edit" asp-route-id="@item.DiscussionId" style="font-size: 0.8rem; padding: 0.5rem 1rem; background-color: darkgreen;">Edit</a>
+                        <a class="btn btn-light text-white fw-bold" asp-action="Details" asp-route-id="@item.DiscussionId" style="font-size: 0.8rem; padding: 0.5rem 1rem; background-color: darkgreen;">Details</a>
+                        <a class="btn btn-light text-white fw-bold" asp-action="Delete" asp-route-id="@item.DiscussionId" style="font-size: 0.8rem; padding: 0.5rem 1rem; background-color: darkgreen;">Delete</a>
+                        <a class="btn btn-light text-white fw-bold" asp-controller="Comments" asp-action="Create" asp-route-id="@item.DiscussionId" style="font-size: 0.8rem; padding: 0.5rem 1rem; background-color: darkgreen;">Add Comment</a>
+
+                        @if (item.Comments != null)
+                        {
+                            @foreach (var comment in item.Comments)
+                            {
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted" style="font-size: 0.875rem;">@comment.CommentId</span>
+                                    <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.CommentId" class="btn btn-light text-white fw-bold" style="font-size: 0.8rem; padding: 0.5rem 1rem; background-color: darkgreen;">x</a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
