@@ -7,7 +7,7 @@
 
 <h1 class="fw-bold text-center my-4" style="color: darkgreen"> Welcome to Plantopia Forum</h1>
 
-<div class="text-center fs-6 mb-4">
+<div class="text-center fs-6 mb-5 mt-5 text-black" style="font-family:'Times New Roman', Times, serif;">
     <p>
         "PlantopiaForum is a thriving digital space where plant lovers from all walks of life can come together to celebrate their passion for greenery. Whether you're a seasoned gardener, a budding plant enthusiast, or simply someone who enjoys the beauty of plants, this is the perfect place to connect, share, and learn.
 
@@ -25,7 +25,7 @@
                     @if (!string.IsNullOrEmpty(item.ImageFilename))
                     {
                         <a href="@Url.Action("Details", "Discussions", new { id = item.DiscussionId })">
-                            <!-- Set fixed height for images -->
+                          
                             <img src="@imageUrl" class="card-img-top" alt="@item.Content" style="height: 250px; object-fit: cover;" />
                         </a>
                     }
@@ -34,6 +34,16 @@
                         <h5 class="card-title mb-2" style="color:darkorchid;">@item.Title</h5>
                         <p class="card-text flex-grow-1" style="font-size: 0.875rem;">@item.Content</p>
                         <p class="card-text text-muted mb-2" style="font-size: 0.65rem;color:cadetblue;">Posted on @item.CreatedAt.ToString("MMMM dd, yyyy")</p>
+                        <p class="card-text text-muted" style="font-size: 0.75rem; color: grey;">
+                            @if (item.Comments == null)
+                            {
+                                <span>No comments yet.</span>
+                            }
+                            else
+                            {
+                                <span>Comments:  @(item.Comments.Count())</span>
+                            }
+                        </p>
                     </div>
                 </div>
             </div>

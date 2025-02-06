@@ -16,12 +16,17 @@
     height: 300px;
     position: relative;
 }
-.navbar, h1{
+.navbar, h1, h5{
     font-family: 'Pacifico', cursive; 
     color:darkgreen;
 }
 
 
+.comment-box:hover {
+    background-color: #f0f8f0; 
+    border-left-color: #388E3C; 
+    cursor: pointer; 
+}
 
 .masonry-grid {
     column-count: 3;

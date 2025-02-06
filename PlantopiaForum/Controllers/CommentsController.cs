@@ -37,17 +37,16 @@ namespace PlantopiaForum.Controllers
         {
             if (ModelState.IsValid)
             {
-
-               // Set the create date for the comment
-                comment.CreateDate = DateTime.Now;
-
+              
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
 
                 // Redirect to the discussion details page after creating the comment
                 return RedirectToAction("Details", "Discussions", new { id = comment.DiscussionId });
             }
-            ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId", comment.DiscussionId);
+
+            
+            ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "Title", comment.DiscussionId);
             return View(comment);
         }
 

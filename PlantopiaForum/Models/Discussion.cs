@@ -16,7 +16,7 @@ namespace PlantopiaForum.Models
         [Display(Name = "Photograph")]
         public IFormFile? ImageFile { get; set; } // nullable! 
 
-        [Display(Name = "Date Created")]
+        [Display(Name = "Posted on")]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         
         // Navigation property 

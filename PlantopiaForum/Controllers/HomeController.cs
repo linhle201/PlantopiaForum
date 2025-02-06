@@ -19,8 +19,11 @@ namespace PlantopiaForum.Controllers
         public async Task<IActionResult> Index()
         {
             var discussions = await _context.Discussion
-            .OrderByDescending(m => m.CreatedAt)
-            .ToListAsync();
+         .Include(d => d.Comments) 
+         .OrderByDescending(m => m.CreatedAt)
+         .ToListAsync();
+
+           
 
             return View(discussions);
         }

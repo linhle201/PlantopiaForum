@@ -23,6 +23,7 @@ namespace PlantopiaForum.Controllers
         public async Task<IActionResult> Index()
         {
             var discussions = await _context.Discussion
+                .Include(d => d.Comments)
             .OrderByDescending(m => m.CreatedAt)
             .ToListAsync();
             return View(discussions);
@@ -36,8 +37,11 @@ namespace PlantopiaForum.Controllers
                 return NotFound();
             }
 
-            var discussion = await _context.Discussion.FirstOrDefaultAsync(m => m.DiscussionId == id);
             
+            var discussion = await _context.Discussion
+                .Include(d => d.Comments.OrderByDescending(c => c.CreateDate)) 
+                .FirstOrDefaultAsync(m => m.DiscussionId == id);
+
             if (discussion == null)
             {
                 return NotFound();
@@ -45,7 +49,6 @@ namespace PlantopiaForum.Controllers
 
             return View(discussion);
         }
-
         // GET: Discussions/Create
         public IActionResult Create()
         {
@@ -60,30 +63,27 @@ namespace PlantopiaForum.Controllers
         public async Task<IActionResult> Create([Bind("DiscussionId,Title,Content,ImageFile,CreatedAt")] Discussion discussion)
         {
 
-            // Check if an image file is uploaded
-            if (discussion.ImageFile != null)
-            {
-                // Rename the uploaded file to a GUID (unique filename) and set it before saving in the database
-                discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile.FileName);
+            // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
+            discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
 
-                // Save the uploaded file to the wwwroot/images folder
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", discussion.ImageFilename);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await discussion.ImageFile.CopyToAsync(fileStream);
-                }
-            }
-
-            // Only save to the database if the model is valid
             if (ModelState.IsValid)
             {
-                // Add the discussion to the database
+                // save the photo in database
                 _context.Add(discussion);
                 await _context.SaveChangesAsync();
 
+                // save the uploaded file after the photo is saved in the database.
+                if (discussion.ImageFile != null)
+                {
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", discussion.ImageFilename);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await discussion.ImageFile.CopyToAsync(fileStream);
+                    }
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-
             return View(discussion);
         }
 
