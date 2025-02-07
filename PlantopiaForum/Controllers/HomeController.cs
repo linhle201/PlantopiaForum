@@ -32,7 +32,7 @@ namespace PlantopiaForum.Controllers
         public async Task<IActionResult> GetDiscussion(int id)
         {
 
-            var discussion = _context.Discussion.Include(d => d.Comments).FirstOrDefault(d => d.DiscussionId == id);
+            var discussion = _context.Discussion.Include(d => d.Comments).OrderByDescending(m => m.CreatedAt).FirstOrDefault(d => d.DiscussionId == id);
             if (discussion == null)
             {
                 return NotFound();

@@ -44,7 +44,10 @@
                         <p class="card-text text-muted" style="font-size: 0.75rem; color: cadetblue; margin-bottom: 3px;">
                             Posted on @item.CreatedAt.ToString("MM dd, yyyy")
                         </p>
+                    
+                           
                         <p class="card-text text-muted mb-0" style="font-size: 0.8rem; color: grey;">
+                            
                             @if (item.Comments == null)
                             {
                                 <span>No comments yet.</span>
@@ -54,6 +57,7 @@
                                 <span>Comments: @(item.Comments.Count())</span>
                             }
                         </p>
+                        
                     </div>
                 </div>
             </div>
