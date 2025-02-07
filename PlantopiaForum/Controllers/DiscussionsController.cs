@@ -39,7 +39,6 @@ namespace PlantopiaForum.Controllers
 
             
             var discussion = await _context.Discussion
-                .Include(d => d.Comments.OrderByDescending(c => c.CreateDate)) 
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
 
             if (discussion == null)
@@ -68,6 +67,7 @@ namespace PlantopiaForum.Controllers
 
             if (ModelState.IsValid)
             {
+                discussion.CreatedAt = DateTime.Now;
                 // save the photo in database
                 _context.Add(discussion);
                 await _context.SaveChangesAsync();

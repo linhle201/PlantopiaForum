@@ -22,10 +22,22 @@ namespace PlantopiaForum.Controllers
 
 
         // GET: Comments/Create
-        public IActionResult Create()
+
+        public IActionResult Create(int DiscussionId)
         {
-            ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "DiscussionId");
-            return View();
+            var discussion = _context.Discussion.FirstOrDefault(d => d.DiscussionId == DiscussionId);
+
+            if (discussion == null)
+            {
+                return NotFound();
+            }
+
+            var comment = new Comment
+            {
+                DiscussionId = DiscussionId
+            };
+
+            return View(comment);
         }
 
         // POST: Comments/Create
@@ -37,16 +49,20 @@ namespace PlantopiaForum.Controllers
         {
             if (ModelState.IsValid)
             {
-              
+
+                // Set the CreateDate for the comment
+                comment.CreateDate = DateTime.Now;
+
+                // Add the comment to the database
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
 
                 // Redirect to the discussion details page after creating the comment
-                return RedirectToAction("Details", "Discussions", new { id = comment.DiscussionId });
+                return RedirectToAction("GetDiscussion", "Home", new { id = comment.DiscussionId });
             }
 
-            
-            ViewData["DiscussionId"] = new SelectList(_context.Discussion, "DiscussionId", "Title", comment.DiscussionId);
+            // If ModelState is invalid, return to the view with the correct DiscussionId
+            ViewData["DiscussionId"] = comment.DiscussionId;
             return View(comment);
         }
 

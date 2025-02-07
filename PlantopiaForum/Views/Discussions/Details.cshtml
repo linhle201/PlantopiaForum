@@ -59,43 +59,11 @@
             </svg> Edit
         </a>
 
-        <!--  Comment Button -->
-        <a asp-controller="Comments" asp-action="Create" asp-route-id="@Model.DiscussionId" class="btn btn-sm ms-3" style="color:white; background-color:darkgreen">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-square-heart" viewBox="0 0 16 16">
-                <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1h-2.5a2 2 0 0 0-1.6.8L8 14.333 6.1 11.8a2 2 0 0 0-1.6-.8H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2.5a1 1 0 0 1 .8.4l1.9 2.533a1 1 0 0 0 1.6 0l1.9-2.533a1 1 0 0 1 .8-.4H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z" />
-                <path d="M8 3.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
-            </svg> Add Comment
-        </a>
-
         <a asp-action="Index" class="btn btn-sm ms-3" style="color:white; background-color:darkgreen">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward" viewBox="0 0 16 16">
                 <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z" />
             </svg> Back to List
         </a>
     </div>
-    @if (Model.Comments != null && Model.Comments.Any())
-    {
-       <h5 class="text-darkgreen mt-4" style="font-family: 'Pacifico', cursive;">Comments</h5>
-
-        <div class="row">
-            @foreach (var comment in Model.Comments)
-            {
-                <div class="col-md-6 mb-3"> 
-                    <div class="card shadow-sm rounded">
-                        <div class="card-body">
-                            <p class="card-text fs-6 fw-semibold" style=" color: darkgreen;">@comment.Content</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <small class="text-muted" style="font-size: 0.75rem;">@comment.CreateDate.ToString("g")</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    }else{
-        <div class=" mt-5 card shadow-lg rounded justify-content-between align-items-center">
-        <h5 class="fs-6 p-2">No comments yet. Be the first person!.</h5>
-        </div>
-    }
    
 </div>

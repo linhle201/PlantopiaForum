@@ -29,15 +29,19 @@ namespace PlantopiaForum.Controllers
         }
 
         // Display a discussion by id - ../Home/Dicussion/328
-        public async Task<IActionResult> Discussion(int id)
+        public async Task<IActionResult> GetDiscussion(int id)
         {
-            // get photo from db by id
-            var discussions = await _context.Discussion
-            .OrderByDescending(m => m.CreatedAt)  
-            .ToListAsync();
 
-            return View(discussions);
+            var discussion = _context.Discussion.Include(d => d.Comments).FirstOrDefault(d => d.DiscussionId == id);
+            if (discussion == null)
+            {
+                return NotFound();
+            }
+
+            return View(discussion);
         }
+
+       
 
         // Privacy page - ../Home/Privacy/
         public IActionResult Privacy()

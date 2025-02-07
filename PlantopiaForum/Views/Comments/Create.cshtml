@@ -4,39 +4,44 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1 class="mt-4">Create Comment</h1>
+<!-- Back to Discussion Link -->
+<a asp-controller="Home" asp-action="GetDiscussion" asp-route-id="@ViewData["DiscussionId"]" class="btn btn-sm ms-3 mt-3" style="color:white; background-color:darkgreen">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward" viewBox="0 0 16 16">
+        <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z" />
+    </svg> Back to Discussion
+</a>
 
-<h4>Comment</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<h4 class="text-center mb-4">Leave a Comment</h4>
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
+            <input type="hidden" asp-for="DiscussionId" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label for="content" class="form-label">Your Comment</label>
+                <textarea asp-for="Content" id="content" class="form-control" rows="4" placeholder="Write your comment here..."></textarea>
             </div>
-            <div class="form-group">
-                <label asp-for="CreateDate" class="control-label"></label>
-                <input asp-for="CreateDate" class="form-control" />
-                <span asp-validation-for="CreateDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiscussionId" class="control-label"></label>
-                <select asp-for="DiscussionId" class ="form-control" asp-items="ViewBag.DiscussionId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+            <div class="d-flex justify-content-between">
+                <div class="mb-3">
+                    <input type="submit" value="Submit Comment" class="btn btn-primary w-100" />
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="text-center mt-4">
+    <a asp-action="GetDiscussion" asp-controller="Home" asp-route-id="@Model.DiscussionId" class="btn btn-secondary">Back to Discussions</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
