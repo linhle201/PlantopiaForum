@@ -61,7 +61,6 @@ namespace PlantopiaForum.Controllers
                 return RedirectToAction("GetDiscussion", "Home", new { id = comment.DiscussionId });
             }
 
-            // If ModelState is invalid, return to the view with the correct DiscussionId
             ViewData["DiscussionId"] = comment.DiscussionId;
             return View(comment);
         }
