@@ -1,0 +1,93 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1 class="mt-4">@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-4 mt-4">
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <hr />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class=" mb-3">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Input.Password">Password</label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+            <div class=" mb-3">
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            @* BEGIN: ApplicationUser custom fields *@
+            <div class="mb-3">
+                <label asp-for="Input.Name" class="form-label"></label>
+                <input asp-for="Input.Name" class="form-control" />
+                <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Location" class="form-label"></label>
+                <input asp-for="Input.Location" class="form-control" />
+                <span asp-validation-for="Input.Location" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.ImageFilename" class="form-label"></label>
+                <textarea asp-for="Input.ImageFilename" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Input.ImageFilename" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.ImageFile" class="form-label"></label>
+                <textarea asp-for="Input.ImageFile" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
+            </div>
+            @* END: ApplicationUser custom fields *@
+            <button id="registerSubmit" type="submit" class="btn bg-white btn-sm w-2/3 fw-bold" style="font-family: 'Pacifico', cursive; color: darkgreen; box-shadow: 5px 4px 10px rgba(0, 100, 0, 0.2); transition: transform 0.3s ease;"
+                    onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='5px 4px 15px rgba(0, 100, 0, 0.4)';"
+                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='5px 4px 10px rgba(0, 100, 0, 0.2)';">
+                Register
+            </button>
+        </form>
+    </div>
+    @* <div class="col-md-6 col-md-offset-2"> *@
+    @*     <section> *@
+    @*         <h3>Use another service to register.</h3> *@
+    @*         <hr /> *@
+    @*         @{ *@
+    @*             if ((Model.ExternalLogins?.Count ?? 0) == 0) *@
+    @*             { *@
+    @*                 <div> *@
+    @*                     <p> *@
+    @*                         There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article *@
+    @*                         about setting up this ASP.NET application to support logging in via external services</a>. *@
+    @*                     </p> *@
+    @*                 </div> *@
+    @*             } *@
+    @*             else *@
+    @*             { *@
+    @*                 <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal"> *@
+    @*                     <div> *@
+    @*                         <p> *@
+    @*                             @foreach (var provider in Model.ExternalLogins!) *@
+    @*                             { *@
+    @*                                 <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button> *@
+    @*                             } *@
+    @*                         </p> *@
+    @*                     </div> *@
+    @*                 </form> *@
+    @*             } *@
+    @*         } *@
+    @*     </section> *@
+    @* </div> *@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

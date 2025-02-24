@@ -16,7 +16,7 @@
     height: 300px;
     position: relative;
 }
-.navbar, h1, h5{
+.navbar, h1, h5, button{
     font-family: 'Pacifico', cursive; 
     color:darkgreen;
 }
