@@ -62,8 +62,11 @@ namespace PlantopiaForum.Controllers
         public async Task<IActionResult> Create([Bind("DiscussionId,Title,Content,ImageFile,CreatedAt")] Discussion discussion)
         {
 
-            // rename the uploaded file to a guid (unique filename). Set before photo saved in database.
-            discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile?.FileName);
+            if (discussion.ImageFile != null)
+            {
+                // Rename the uploaded file to a GUID (unique filename) if an image is provided.
+                discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile.FileName);
+            }
 
             if (ModelState.IsValid)
             {
