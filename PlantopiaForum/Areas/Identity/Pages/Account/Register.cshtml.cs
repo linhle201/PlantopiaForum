@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using PlantopiaForum.Data;
+using PlantopiaForum.Models;
 
 namespace PlantopiaForum.Areas.Identity.Pages.Account
 {
@@ -84,7 +85,7 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account
             public string Location { get; set; }
 
             [PersonalData]
-            [Display(Name = "Photo Name ")]
+            [Display(Name = "Photo")]
             public string ImageFilename { get; set; } = string.Empty;
 
             [NotMapped]  // This will make sure this property is not mapped to the database
@@ -141,14 +142,28 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account
 
                 /////////////////////////////////////////
                 /// BEGIN: ApplicationUser custom fields
-                /////////////////////////////////////////    
+                /////////////////////////////////////////
+
+                // Rename the uploaded file to a GUID (unique filename)
+                if (Input.ImageFile != null)
+                {
+                    user.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(Input.ImageFile.FileName);
+
+                    // Define the file path to save the image
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", user.ImageFilename);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await user.ImageFile.CopyToAsync(fileStream);
+                    }
+                }
+
+                // Save custom fields (user details)
                 user.Name = Input.Name;
-                user.ImageFile = Input.ImageFile;
                 user.Location = Input.Location;
-                user.ImageFilename = Input.ImageFilename;
+
                 /////////////////////////////////////////
                 /// END: ApplicationUser custom fields
-                /////////////////////////////////////////    
+                /////////////////////////////////////////
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

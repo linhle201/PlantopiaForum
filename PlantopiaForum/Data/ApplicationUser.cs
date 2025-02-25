@@ -19,5 +19,7 @@ namespace PlantopiaForum.Data
         [NotMapped]  // This will make sure this property is not mapped to the database
         [Display(Name = "Photo")]
         public IFormFile? ImageFile { get; set; } // Nullable, as the photo is optional
+
+       
     }
 }

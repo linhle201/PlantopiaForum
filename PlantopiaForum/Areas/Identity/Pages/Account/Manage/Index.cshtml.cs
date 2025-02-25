@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PlantopiaForum.Data;
+using PlantopiaForum.Models;
 
 namespace PlantopiaForum.Areas.Identity.Pages.Account.Manage
 {
@@ -98,16 +99,21 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account.Manage
                 /////////////////////////////////////////
                 /// BEGIN: ApplicationUser custom fields
                 /////////////////////////////////////////  
+
                 Name = user.Name,
                 Location = user.Location,
-                ImageFilename = user.ImageFilename,  // Get the file name from the database
-                ImageFile = null,  // Do not assign the IFormFile here, it's only used in the upload process
+                ImageFilename = user.ImageFilename,
+                PhoneNumber = phoneNumber
                 /////////////////////////////////////////
                 /// END: ApplicationUser custom fields
                 /////////////////////////////////////////
-                PhoneNumber = phoneNumber
             };
+
+            
         }
+        
+       
+        
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -152,25 +158,38 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account.Manage
             /// BEGIN: ApplicationUser custom fields
             /////////////////////////////////////////
 
+            if (Input.ImageFile != null)
+            {
+                // Generate a unique filename for the new image
+                var newFileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.ImageFile.FileName);
+
+                // Save the uploaded image to the server
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", newFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Input.ImageFile.CopyToAsync(fileStream);
+                }
+
+                // Update the user's ImageFilename in the database
+                user.ImageFilename = newFileName;
+            }
+            else
+            {
+                // If no new image is uploaded, retain the old image filename
+                user.ImageFilename = user.ImageFilename;  // Ensure that ImageFilename is not null
+            }
+
             if (Input.Name != user.Name)
             {
                 user.Name = Input.Name;
             }
 
+            // Update Location
             if (Input.Location != user.Location)
             {
                 user.Location = Input.Location;
             }
 
-            if (Input.ImageFilename != user.ImageFilename)
-            {
-                user.ImageFilename = Input.ImageFilename;
-            }
-
-            if (Input.ImageFile != user.ImageFile)
-            {
-                user.ImageFile = Input.ImageFile;
-            }
 
             await _userManager.UpdateAsync(user);
 

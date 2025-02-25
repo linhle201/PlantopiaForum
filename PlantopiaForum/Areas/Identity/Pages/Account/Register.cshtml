@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="col-md-4 mt-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+        <form id="registerForm" enctype="multipart/form-data" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <hr />
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class=" mb-3">
@@ -38,14 +38,14 @@
                 <input asp-for="Input.Location" class="form-control" />
                 <span asp-validation-for="Input.Location" class="text-danger"></span>
             </div>
-            <div class="mb-3">
+            @*<div class="mb-3">
                 <label asp-for="Input.ImageFilename" class="form-label"></label>
                 <textarea asp-for="Input.ImageFilename" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Input.ImageFilename" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="mb-3">
                 <label asp-for="Input.ImageFile" class="form-label"></label>
-                <textarea asp-for="Input.ImageFile" class="form-control" rows="3"></textarea>
+                <input type="file" asp-for="Input.ImageFile" class="form-control" />
                 <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
             </div>
             @* END: ApplicationUser custom fields *@

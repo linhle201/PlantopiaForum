@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using PlantopiaForum.Data;
 
 namespace PlantopiaForum.Models
 {
@@ -22,5 +23,9 @@ namespace PlantopiaForum.Models
         // Navigation property 
         public List<Comment> ? Comments { get; set; }  // nullable!!!
 
+        // Foreign key (AspNetUsers table)
+        public string ApplicationUserId { get; set; } = string.Empty;
+        // Navigation property
+        public ApplicationUser? ApplicationUser { get; set; } // nullable!!!
     }
 }
