@@ -4,14 +4,40 @@
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
 }
-<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index">Profile</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email">Email</a></li>
-    <li class="nav-item"><a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword">Password</a></li>
+<ul class="nav  flex-column" style="font-family: 'Pacifico', cursive; color: darkgreen;">
+    <li class="nav-item mb-2">
+        <a class="nav-link @ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"
+           style="font-size: 1.1rem; font-weight: bold; color: darkgreen; border-radius: 5px; transition: background-color 0.3s ease;"
+           onmouseover="this.style.backgroundColor='rgba(0, 100, 0, 0.1)';"
+           onmouseout="this.style.backgroundColor='transparent';">
+            Profile
+        </a>
+    </li>
+    <li class="nav-item mb-2">
+        <a class="nav-link @ManageNavPages.EmailNavClass(ViewContext)" id="email" asp-page="./Email"
+           style="font-size: 1.1rem; font-weight: bold; color: darkgreen; border-radius: 5px; transition: background-color 0.3s ease;"
+           onmouseover="this.style.backgroundColor='rgba(0, 100, 0, 0.1)';"
+           onmouseout="this.style.backgroundColor='transparent';">
+            Email
+        </a>
+    </li>
+    <li class="nav-item mb-2">
+        <a class="nav-link @ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"
+           style="font-size: 1.1rem; font-weight: bold; color: darkgreen; border-radius: 5px; transition: background-color 0.3s ease;"
+           onmouseover="this.style.backgroundColor='rgba(0, 100, 0, 0.1)';"
+           onmouseout="this.style.backgroundColor='transparent';">
+            Password
+        </a>
+    </li>
     @if (hasExternalLogins)
     {
-        <li id="external-logins" class="nav-item"><a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins">External logins</a></li>
+        <li id="external-logins" class="nav-item mb-2">
+            <a id="external-login" class="nav-link @ManageNavPages.ExternalLoginsNavClass(ViewContext)" asp-page="./ExternalLogins"
+               style="font-size: 1.1rem; font-weight: bold; color: darkgreen; border-radius: 5px; transition: background-color 0.3s ease;"
+               onmouseover="this.style.backgroundColor='rgba(0, 100, 0, 0.1)';"
+               onmouseout="this.style.backgroundColor='transparent';">
+                External logins
+            </a>
+        </li>
     }
-    @* <li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li> *@
-    @* <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Personal data</a></li> *@
 </ul>

@@ -11,42 +11,47 @@
     <p>
         "PlantopiaForum is a thriving digital space where plant lovers from all walks of life can come together to celebrate their passion for greenery. Whether you're a seasoned gardener, a budding plant enthusiast, or simply someone who enjoys the beauty of plants, this is the perfect place to connect, share, and learn.
 
-        Our community is built on the joy of nurturing plants, swapping tips and tricks, and showing off your green thumb with fellow plant lovers."</p>
+        Our community is built on the joy of nurturing plants, swapping tips and tricks, and showing off your green thumb with fellow plant lovers."
+    </p>
 </div>
 
 <div class="container">
-    <div class="row g-2">
+    <div class="row g-4">
         @foreach (var item in Model)
         {
             string imageUrl = Url.Content("/images/" + item.ImageFilename);
 
-            <div class="col-12">
-                <div class="card shadow-lg border-1 w-100 d-flex flex-row" style="position: relative; margin-bottom: 5px;">
-                    <!-- Image Section (col-2) -->
-                    <div class="col-2" style="position: relative;">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-2 border-darkgreen rounded-3 w-100 d-flex flex-row" style="position: relative; margin-bottom: 5px; height: 170px; border: 2px solid darkgreen; border-radius: 5px;">
+                    <!-- Image Section (col-3) -->
+                    <div class="col-3" style="position: relative;">
                         @if (!string.IsNullOrEmpty(item.ImageFilename))
                         {
                             <a href="@Url.Action("GetDiscussion", "Home", new { id = item.DiscussionId })">
                                 <img src="@imageUrl" alt="@item.Content" class="img-fluid"
                                      style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                                            width: 100%; height: 100px; object-fit: cover;" />
+                                            width: 100%; height: 100%; object-fit: cover;" />
                             </a>
                         }
                     </div>
 
-                    <!-- Content Section (col-10) -->
-                    <div class="col-10 d-flex flex-column mt-1" style="padding-left: 15px; padding-right: 15px;">
-                        <a href="@Url.Action("GetDiscussion", "Home", new { id = item.DiscussionId })"style="text-decoration:none;">
+                    <!-- Content Section (col-9) -->
+                    <div class="col-9 d-flex flex-column justify-content-center" style="padding-left: 15px; padding-right: 15px;">
+                        <a href="@Url.Action("GetDiscussion", "Home", new { id = item.DiscussionId })" style="text-decoration:none;">
                             <h5 class="card-title" style="color: darkviolet; font-size: 1rem; line-height: 1.2; margin-bottom: 5px;">@item.Title</h5>
                         </a>
                         <p class="card-text text-black" style="font-family:'Times New Roman', Times, serif; font-size: 0.9rem; margin-bottom: 5px;">@item.Content</p>
-                        <p class="card-text text-muted" style="font-size: 0.75rem; color: cadetblue; margin-bottom: 3px;">
+
+                        <!-- Display the user's name (creator) above the "Posted on" -->
+                        <p class="card-text text-muted" style="font-size: 0.65rem; color: green; margin-bottom: 3px;">
+                            Created by: @item.ApplicationUser
+                        </p>
+
+                        <p class="card-text text-muted" style="font-size: 0.65rem; color: cadetblue; margin-bottom: 3px;">
                             Posted on @item.CreatedAt.ToString("MM dd, yyyy")
                         </p>
-                    
-                           
-                        <p class="card-text text-muted mb-0" style="font-size: 0.8rem; color: grey;">
-                            
+
+                        <p class="card-text text-muted mb-0" style="font-size: 0.65rem; color: grey;">
                             @if (item.Comments == null)
                             {
                                 <span>No comments yet.</span>
@@ -56,7 +61,6 @@
                                 <span>Comments: @(item.Comments.Count())</span>
                             }
                         </p>
-                        
                     </div>
                 </div>
             </div>

@@ -28,7 +28,9 @@ namespace PlantopiaForum.Controllers
         // GET: Discussions
         public async Task<IActionResult> Index()
         {
+            var userId = _userManager.GetUserId(User);
             var discussions = await _context.Discussion
+                 .Where(m => m.ApplicationUserId == userId)
                 .Include(d => d.Comments)
             .OrderByDescending(m => m.CreatedAt)
             .ToListAsync();
@@ -73,6 +75,8 @@ namespace PlantopiaForum.Controllers
                 // Rename the uploaded file to a GUID (unique filename) if an image is provided.
                 discussion.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(discussion.ImageFile.FileName);
             }
+            // Set the user ID of the person logged in
+            discussion.ApplicationUserId = _userManager.GetUserId(User);
 
             if (ModelState.IsValid)
             {
@@ -103,9 +107,14 @@ namespace PlantopiaForum.Controllers
             {
                 return NotFound();
             }
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
 
             // Include the Comments list 
-            var discussion = await _context.Discussion.Include(m => m.Comments).FirstOrDefaultAsync(m => m.DiscussionId == id);
+            var discussion = await _context.Discussion
+                .Include(m => m.Comments)
+                .Where(m => m.ApplicationUserId == userId)
+                .FirstOrDefaultAsync(m => m.DiscussionId == id);
 
             if (discussion == null)
             {
@@ -119,7 +128,7 @@ namespace PlantopiaForum.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFile,ImageFilename,CreatedAt")] Discussion discussion)
+        public async Task<IActionResult> Edit(int id, [Bind("DiscussionId,Title,Content,ImageFile,ImageFilename,CreatedAt,ApplicationUserId")] Discussion discussion)
         {
             if (id != discussion.DiscussionId)
             {
@@ -191,8 +200,11 @@ namespace PlantopiaForum.Controllers
             {
                 return NotFound();
             }
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
 
             var discussion = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId)
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
             if (discussion == null)
             {
@@ -207,7 +219,11 @@ namespace PlantopiaForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var discussion = await _context.Discussion.FindAsync(id);
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
+
+            var discussion = await _context.Discussion
+                .Where(m => m.ApplicationUserId == userId).FirstOrDefaultAsync(m => m.DiscussionId == id);
             if (discussion != null)
             {
                 _context.Discussion.Remove(discussion);

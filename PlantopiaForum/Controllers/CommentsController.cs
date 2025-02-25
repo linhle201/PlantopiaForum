@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +13,16 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PlantopiaForum.Controllers
 {
+    [Authorize]
     public class CommentsController : Controller
     {
         private readonly PlantopiaForumContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CommentsController(PlantopiaForumContext context)
+        public CommentsController(PlantopiaForumContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -31,6 +36,8 @@ namespace PlantopiaForum.Controllers
             {
                 return NotFound();
             }
+            // get the logged in user ID
+            var userId = _userManager.GetUserId(User);
 
             var comment = new Comment
             {

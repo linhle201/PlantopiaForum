@@ -144,16 +144,26 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account
                 /// BEGIN: ApplicationUser custom fields
                 /////////////////////////////////////////
 
-                // Rename the uploaded file to a GUID (unique filename)
+                // Check if an image file is uploaded
                 if (Input.ImageFile != null)
                 {
+                    // Generate a unique filename for the uploaded image
                     user.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(Input.ImageFile.FileName);
 
-                    // Define the file path to save the image
+                    // Define the path where the image will be saved
                     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", user.ImageFilename);
+
+                    // Ensure the directory exists
+                    var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                    if (!Directory.Exists(imageDirectory))
+                    {
+                        Directory.CreateDirectory(imageDirectory);
+                    }
+
+                    // Save the image to the server
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
-                        await user.ImageFile.CopyToAsync(fileStream);
+                        await Input.ImageFile.CopyToAsync(fileStream);
                     }
                 }
 

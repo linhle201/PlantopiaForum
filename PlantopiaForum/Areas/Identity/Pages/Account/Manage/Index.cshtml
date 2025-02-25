@@ -5,47 +5,63 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
-<h3>@ViewData["Title"]</h3>
-<partial name="_StatusMessage" for="StatusMessage" style="font-size:0.5rem;" />
-<div class="row">
-    <div class="col-md-6">
-        <form id="profile-form" enctype="multipart/form-data"  method="post">
+<h3 style="font-family: 'Pacifico', cursive; color: darkgreen;" class="text-center fs-1 my-4">@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" style="font-size:0.75rem;" />
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form id="profile-form" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
-                <label asp-for="Username" class="form-label"></label>
+
+            <!-- Username Field (Read-only) -->
+            <div class="form-group mb-3 " style="font-family: 'Pacifico', cursive; color: darkgreen;">
+                <label asp-for="Username" class="form-label fs-5 text-muted">Username</label>
+                <input asp-for="Username" class="form-control bg-light" placeholder="Please choose your username." disabled />
             </div>
-            @*<div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-            </div>*@
-            @* BEGIN: ApplicationUser custom fields *@
-            <div class="mb-3">
-                <label asp-for="Input.Name" class="form-label"></label>
-                <input asp-for="Input.Name" class="form-control" />
+
+            <!-- Name Input -->
+            <div class="form-group mb-3 " style="font-family: 'Pacifico', cursive; color: darkgreen;">
+                <label asp-for="Input.Name" class="form-label fs-5">Full Name</label>
+                <input asp-for="Input.Name" class="form-control text-dark fs-6" style="font-family: 'Pacifico', cursive;  placeholder="Enter your full name" />
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
-            
-            <div class="mb-3">
-                <label asp-for="Input.Location" class="form-label"></label>
-                <input asp-for="Input.Location" class="form-control" />
+
+            <!-- Location Input -->
+            <div class="form-group mb-3 " style="font-family: 'Pacifico', cursive; color: darkgreen;">
+                <label asp-for="Input.Location" class="form-label fs-5">Location</label>
+                <input asp-for="Input.Location" class="form-control text-dark fs-6" style="font-family: 'Pacifico', cursive; " placeholder="Enter your location" />
                 <span asp-validation-for="Input.Location" class="text-danger"></span>
             </div>
+
+            <!-- Image Preview -->
             @if (!string.IsNullOrEmpty(Model.Input.ImageFilename))
             {
-                <div class="form-group">
-                    <label class="control-label">Current Image</label>
-                    <img src="@Url.Content("~/images/" + Model.Input.ImageFilename)" alt="Current Image" class="img-thumbnail" />
+                <div class="form-group mb-4" style="font-family: 'Pacifico', cursive; color: darkgreen;">
+                    <label class="control-label fs-5">Current Profile Picture</label>
+                    <div class="image-preview mt-4 mb-4" style="text-align: center;">
+                        <img src="@Url.Content("~/images/" + Model.Input.ImageFilename)" alt="Current Image" class="img-fluid" style="height:300px; width:300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); display: block; margin: 0 auto;" />
+                    </div>
                 </div>
             }
-            <div class="mb-3">
-                <label asp-for="Input.ImageFile" class="form-label"></label>
+
+            <!-- File Upload for New Profile Image -->
+            <div class="mb-3" style="font-family: 'Pacifico', cursive; color: darkgreen;">
+                <label asp-for="Input.ImageFile" class="form-label fs-5">Change Profile Picture</label>
                 <input type="file" asp-for="Input.ImageFile" class="form-control" />
                 <span asp-validation-for="Input.ImageFile" class="text-danger"></span>
             </div>
-            @* END: ApplicationUser custom fields *@
-            <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
+
+            <!-- Save Button -->
+            <div class="d-flex justify-content-center mt-3">
+                <button id="update-profile-button" type="submit" class="btn text-white btn-lg w-50 fs-5 fw-bold"
+                        style="font-family: 'Pacifico', cursive; background-color: darkgreen; box-shadow: 5px 4px 10px rgba(0, 0, 0, 0.2);
+                   transition: transform 0.3s ease;"
+                        onmouseover="this.style.transform='scale(1.1)'; this.style.boxShadow='5px 4px 15px rgba(0, 100, 0, 0.4)';"
+                        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='5px 4px 10px rgba(0, 100, 0, 0.2)';">
+                    Save Changes
+                </button>
+            </div>
+           
         </form>
     </div>
 </div>
