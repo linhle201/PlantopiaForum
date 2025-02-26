@@ -41,7 +41,8 @@ namespace PlantopiaForum.Controllers
 
             var comment = new Comment
             {
-                DiscussionId = DiscussionId
+                DiscussionId = DiscussionId,
+                ApplicationUserId = userId 
             };
 
             return View(comment);
@@ -59,6 +60,12 @@ namespace PlantopiaForum.Controllers
 
                 // Set the CreateDate for the comment
                 comment.CreateDate = DateTime.Now;
+
+                // Get the logged-in user's ID
+                var userId = _userManager.GetUserId(User);
+
+                // Set the ApplicationUserId for the comment
+                comment.ApplicationUserId = userId;
 
                 // Add the comment to the database
                 _context.Add(comment);

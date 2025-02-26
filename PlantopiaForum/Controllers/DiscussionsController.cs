@@ -46,8 +46,10 @@ namespace PlantopiaForum.Controllers
                 return NotFound();
             }
 
-            
+
             var discussion = await _context.Discussion
+                .Include(d => d.Comments)
+                    .ThenInclude(c => c.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.DiscussionId == id);
 
             if (discussion == null)

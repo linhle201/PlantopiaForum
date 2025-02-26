@@ -20,11 +20,9 @@ namespace PlantopiaForum.Controllers
         {
             var discussions = await _context.Discussion
                  .Include(d => d.ApplicationUser)
-                 .Include(d => d.Comments) 
+                 .Include(d => d.Comments)
                  .OrderByDescending(m => m.CreatedAt)
                  .ToListAsync();
-
-           
 
             return View(discussions);
         }
@@ -32,18 +30,19 @@ namespace PlantopiaForum.Controllers
         // Display a discussion by id - ../Home/Dicussion/328
         public async Task<IActionResult> GetDiscussion(int id)
         {
+            var discussion = await _context.Discussion
+                .Include(d => d.ApplicationUser)  
+                .Include(d => d.Comments)  
+                    .ThenInclude(c => c.ApplicationUser)  
+                .OrderByDescending(m => m.CreatedAt)  
+                .FirstOrDefaultAsync(d => d.DiscussionId == id);  
 
-            var discussion = _context.Discussion.Include(d => d.Comments)
-                 .Include(d => d.ApplicationUser)
-                .Include(m => m.ApplicationUser)
-                .OrderByDescending(m => m.CreatedAt)
-                .FirstOrDefault(d => d.DiscussionId == id);
             if (discussion == null)
             {
-                return NotFound();
+                return NotFound();  // Return 404 if the discussion is not found
             }
 
-            return View(discussion);
+            return View(discussion);  // Return the discussion to the view
         }
 
         // Profile page for a specific user (accessed via /home/{userId})

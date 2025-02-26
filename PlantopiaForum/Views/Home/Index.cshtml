@@ -38,17 +38,17 @@
                     <!-- Content Section (col-9) -->
                     <div class="col-9 d-flex flex-column justify-content-center" style="padding-left: 15px; padding-right: 15px;">
                         <a href="@Url.Action("GetDiscussion", "Home", new { id = item.DiscussionId })" style="text-decoration:none;">
-                            <h5 class="card-title" style="color: darkviolet; font-size: 1rem; line-height: 1.2; margin-bottom: 5px;">@item.Title</h5>
+                            <h5 class="card-title" style="color: darkviolet; font-size: 1rem; line-height: 1.2; margin-bottom: 2px;">@item.Title</h5>
                         </a>
-                        <p class="card-text text-black" style="font-family:'Times New Roman', Times, serif; font-size: 0.9rem; margin-bottom: 5px;">@item.Content</p>
+                        <p class="card-text text-black " style="font-family:'Times New Roman', Times, serif; font-size: 0.75rem;  margin-bottom:2px;">@item.Content</p>
 
                         <!-- Display the user's name (creator) above the "Posted on" -->
-                        
-                        <p class="card-text text-muted fst-italic" style="font-size: 0.65rem; color: cadetblue; margin-bottom: 3px;">
+
+                        <p class="card-text text-muted fst-italic" style="font-size: 0.65rem; color: cadetblue;margin-bottom:2px; ">
                             Posted on @item.CreatedAt.ToString("MM dd, yyyy")
                         </p>
 
-                        <p class="card-text text-muted fst-italic mb-0" style="font-size: 0.65rem; color: grey;">
+                        <p class="card-text text-muted fst-italic " style="font-size: 0.65rem; color: grey; margin-bottom:2px;">
                             @if (item.Comments == null)
                             {
                                 <span>No comments yet.</span>
@@ -59,9 +59,9 @@
                             }
                         </p>
 
-                        <p class="card-text fw-bold" style="font-size: 0.75rem; color: green; ">
-                            <a href="@Url.Action("Profile", "Home", new { userId = item.ApplicationUser.Id })" style="color: darkgreen;">
-                                @item.ApplicationUser.Name
+                        <p class="card-text text-muted fst-italic" style="font-size: 0.65rem;">
+                            <a href="@Url.Action("Profile", "Home", new { userId = item.ApplicationUser.Id })" style="color: grey;text-decoration:none;">
+                                Owner: <strong style="font-size: 0.75rem; color: green; ">@item.ApplicationUser.Name</strong>
                             </a>
                         </p>
                     </div>

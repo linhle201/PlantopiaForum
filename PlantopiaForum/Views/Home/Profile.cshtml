@@ -3,18 +3,34 @@
     ViewData["Title"] = $"{Model.UserName}'s Profile"; // Dynamic title based on the UserName
 }
 
-<h2>@Model.UserName's Profile</h2>
+<div class="container mt-5" style="border: 3px solid darkgreen; padding: 20px; border-radius: 10px;">
+    <h2 class="text-center mb-4" style="font-family: 'Pacifico', cursive; color: darkgreen;">@Model.UserName's Profile</h2>
 
-<!-- Display Profile Image if it exists -->
-@if (!string.IsNullOrEmpty(Model.ImageFilename))
-{
-    <img src="~/profile/@Model.ImageFilename" alt="@Model.UserName's Profile Image" class="img-thumbnail" />
-}
-else
-{
-    <img src="~/images/default-profile.png" alt="Default Profile Image" class="img-thumbnail" />
-}
+    <!-- Display Profile Image if it exists -->
+    <div class="text-center">
+        @if (!string.IsNullOrEmpty(Model.ImageFilename))
+        {
+            <img src="@Url.Content("~/profile/" + Model.ImageFilename)" alt="Current Image" class="img-fluid" style="height:300px; width:300px;border: solid 2px darkgreen; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 5); display: block; margin: 0 auto;" />
+        }
+        else
+        {
+            <img src="~/images/default-profile.png" alt="Default Profile Image" class="img-thumbnail" style="max-width: 200px; max-height: 200px;" />
+        }
+    </div>
 
-<p>Email: @Model.Email</p>
-<p>Name: @Model.Name</p>
-<p>Location: @Model.Location</p>
+    <!-- Display user information -->
+    <div class="mt-3 text-center" style=" font-family: 'Pacifico' , cursive; color: darkgreen;">
+        <p><strong>Email:</strong> @Model.Email</p>
+        <p><strong>Name:</strong> @Model.Name</p>
+        <p><strong>Location:</strong> @Model.Location</p>
+    </div>
+
+    <!-- Back to List Button -->
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-sm ms-3" style="color: white; background-color: darkgreen; border-radius: 5px; padding: 10px 20px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward" viewBox="0 0 16 16">
+                <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z" />
+            </svg> Back to List
+        </a>
+    </div>
+</div>

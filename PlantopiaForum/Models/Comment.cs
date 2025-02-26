@@ -1,4 +1,6 @@
-﻿namespace PlantopiaForum.Models
+﻿using PlantopiaForum.Data;
+
+namespace PlantopiaForum.Models
 {
     public class Comment
     {
@@ -11,5 +13,9 @@
 
         // Navigation property for the related discussion
         public Discussion? Discussion { get; set; } //nullable!!
+
+        public string ApplicationUserId { get; set; } = string.Empty;
+        // Navigation property
+        public ApplicationUser? ApplicationUser { get; set; } // nullable!!!
     }
 }
