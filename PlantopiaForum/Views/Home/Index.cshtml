@@ -43,15 +43,12 @@
                         <p class="card-text text-black" style="font-family:'Times New Roman', Times, serif; font-size: 0.9rem; margin-bottom: 5px;">@item.Content</p>
 
                         <!-- Display the user's name (creator) above the "Posted on" -->
-                        <p class="card-text text-muted" style="font-size: 0.65rem; color: green; margin-bottom: 3px;">
-                            Created by: @item.ApplicationUser
-                        </p>
-
-                        <p class="card-text text-muted" style="font-size: 0.65rem; color: cadetblue; margin-bottom: 3px;">
+                        
+                        <p class="card-text text-muted fst-italic" style="font-size: 0.65rem; color: cadetblue; margin-bottom: 3px;">
                             Posted on @item.CreatedAt.ToString("MM dd, yyyy")
                         </p>
 
-                        <p class="card-text text-muted mb-0" style="font-size: 0.65rem; color: grey;">
+                        <p class="card-text text-muted fst-italic mb-0" style="font-size: 0.65rem; color: grey;">
                             @if (item.Comments == null)
                             {
                                 <span>No comments yet.</span>
@@ -60,6 +57,12 @@
                             {
                                 <span>Comments: @(item.Comments.Count())</span>
                             }
+                        </p>
+
+                        <p class="card-text fw-bold" style="font-size: 0.75rem; color: green; ">
+                            <a href="@Url.Action("Profile", "Home", new { userId = item.ApplicationUser.Id })" style="color: darkgreen;">
+                                @item.ApplicationUser.Name
+                            </a>
                         </p>
                     </div>
                 </div>

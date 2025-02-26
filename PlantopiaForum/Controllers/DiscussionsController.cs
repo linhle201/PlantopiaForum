@@ -32,6 +32,7 @@ namespace PlantopiaForum.Controllers
             var discussions = await _context.Discussion
                  .Where(m => m.ApplicationUserId == userId)
                 .Include(d => d.Comments)
+                 .Include(d => d.ApplicationUser)
             .OrderByDescending(m => m.CreatedAt)
             .ToListAsync();
             return View(discussions);

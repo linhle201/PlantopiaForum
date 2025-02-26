@@ -151,10 +151,10 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account
                     user.ImageFilename = Guid.NewGuid().ToString() + Path.GetExtension(Input.ImageFile.FileName);
 
                     // Define the path where the image will be saved
-                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", user.ImageFilename);
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "profile", user.ImageFilename);
 
                     // Ensure the directory exists
-                    var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images");
+                    var imageDirectory = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "profile");
                     if (!Directory.Exists(imageDirectory))
                     {
                         Directory.CreateDirectory(imageDirectory);

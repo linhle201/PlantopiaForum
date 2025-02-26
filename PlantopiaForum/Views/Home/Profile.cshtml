@@ -1,0 +1,20 @@
+﻿@model PlantopiaForum.Data.ApplicationUser
+@{
+    ViewData["Title"] = $"{Model.UserName}'s Profile"; // Dynamic title based on the UserName
+}
+
+<h2>@Model.UserName's Profile</h2>
+
+<!-- Display Profile Image if it exists -->
+@if (!string.IsNullOrEmpty(Model.ImageFilename))
+{
+    <img src="~/profile/@Model.ImageFilename" alt="@Model.UserName's Profile Image" class="img-thumbnail" />
+}
+else
+{
+    <img src="~/images/default-profile.png" alt="Default Profile Image" class="img-thumbnail" />
+}
+
+<p>Email: @Model.Email</p>
+<p>Name: @Model.Name</p>
+<p>Location: @Model.Location</p>

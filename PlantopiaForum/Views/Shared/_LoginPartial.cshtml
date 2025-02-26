@@ -11,7 +11,7 @@
             <a class="nav-link fs-5 fw-bold" style="color: darkgreen" asp-area="" asp-controller="Discussions" asp-action="Index">Discussion</a>
         </li>
         <li class="nav-item d-flex align-items-center">
-            <a id="manage" class="nav-link fs-6" style="color: darkgreen" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="nav-link fs-6 " style="color: darkgreen" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </li>
         <li class="nav-item d-flex align-items-center">
             <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">

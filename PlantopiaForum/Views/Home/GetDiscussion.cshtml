@@ -10,6 +10,35 @@
         <p class="text-muted">Posted on @Model.CreatedAt.ToString("MM dd, yyyy hh:mm tt")</p>
     </div>
 
+    <!-- User profile-->
+    @if (Model.ApplicationUser != null)
+    {
+        <div class="d-flex justify-content-center align-items-center flex-column mt-3 mb-4">
+            <div>
+                @if (!string.IsNullOrEmpty(Model.ApplicationUser.ImageFilename))
+                {
+                    <div class="pe-2">
+                        <!-- Add asp-area and asp-page for the profile redirection -->
+                        <a href="@Url.Action("Profile", "Home", new { userId = Model.ApplicationUser.Id })" >
+                            <img src="~/profile/@Model.ApplicationUser.ImageFilename" alt="@Model.ApplicationUser.Name"
+                                 class="profile-thumbnail"
+                                 style="width: 100px; height: 100px; border-radius: 10px; object-fit: cover; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+                                    border: 2px solid darkgreen; margin-bottom: 10px; transition: transform 0.3s ease-in-out;"
+                                 onmouseover="this.style.transform='scale(1.1)'"
+                                 onmouseout="this.style.transform='scale(1)'" />
+                        </a>
+                    </div>
+                }
+            </div>
+
+            <div>
+                <strong class="fs-6 mt-3" style="font-family: 'Pacifico', cursive; color: darkgreen;">@Model.ApplicationUser.Name</strong>
+            </div>
+        </div>
+    }
+   
+
+
     <!-- Discussion Content -->
     <div class="card shadow-sm rounded mb-4 p-3">
         <h5 style="font-weight: bold;">Discussion Content:</h5>
@@ -18,14 +47,14 @@
 
     <div class="card shadow-sm">
         <div class="card-body">
-
             @if (!string.IsNullOrEmpty(Model.ImageFilename))
             {
                 <div class="text-center mb-4">
-                    <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="@Model.Content" class="img-fluid" style="max-width: 50%; height: auto;" />
+                    <img src="@Url.Content("/images/" + Model.ImageFilename)" alt="@Model.Content"
+                         class="img-fluid mx-auto"
+                         style="width: 50%; height: 500px; border: 2px solid darkgreen; border-radius: 15px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); object-fit: cover;" />
                 </div>
             }
-
         </div>
     </div>
 

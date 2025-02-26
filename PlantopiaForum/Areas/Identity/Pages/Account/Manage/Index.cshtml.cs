@@ -164,7 +164,7 @@ namespace PlantopiaForum.Areas.Identity.Pages.Account.Manage
                 var newFileName = Guid.NewGuid().ToString() + Path.GetExtension(Input.ImageFile.FileName);
 
                 // Save the uploaded image to the server
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", newFileName);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "profile", newFileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await Input.ImageFile.CopyToAsync(fileStream);
